@@ -28,6 +28,17 @@ This makes it suitable for:
 
 ---
 
+## Generalized map foundations and demonstrations (disclaimer)
+
+The current project has been inspired by the work of the team of researchers at CGAL who seriously and in detail discuss and demonstrate varyous advanced topics of computational geometry. Generalized maps are a step further from traditional triangulated meshes, half-edges, etc in its abstraction. To learn more about generalized maps, please go to <https://doc.cgal.org/latest/Generalized_map/>.
+   
+The current Rust project mostly followed the book by Guillaume Damiand and Pascal Lienhardt G. Damiand and P. Lienhardt, Combinatorial Maps: Efficient Data Structures for Computer Graphics and Image Processing. Boca Raton, FL, USA: CRC Press, 2014.) in everything concerning the algorithms particularities.
+   
+This Rust project is NOT a FFI port of the CGAL library (it is written in pure Rust from scratch) and might not include all the functionality of a large mature project developed by a team of professional scientists. Therefore, you are welcome to collaborate on this project and help the author add any missing functionality you might wish to see here.
+
+
+---
+
 ## ✨ Features
 
 - 🧩 Generalized map (G-map) data structure
