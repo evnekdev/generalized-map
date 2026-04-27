@@ -101,17 +101,17 @@ impl<const N: usize, const NA: usize, const NL: usize> NGMap<N,NA,NL> {
 	/// Returns an iterator over an arbitrary orbit of [alpha(i1), alpha(i2), ... alpha(ik)] starting with `dart`.
 	/// 
 	/// The most generic iterator which is heavily used by over iterators.
-	pub fn iter_orbit<'a>(&'a self, dart: DartIndex, iseq: &'a [usize])->IteratorOrbit<N,NA,NL>{
+	pub fn iter_orbit<'a>(&'a self, dart: DartIndex, iseq: &'a [usize])->IteratorOrbit<'a, N,NA,NL>{
 		return IteratorOrbit::new(&self, dart, iseq);
 	}
 	
 	/// Returns an iterator over all darts in an i-cell.
-	pub fn iter_darts_in_cell(&self, dart: DartIndex, i: usize)->IteratorDartsInCell<N,NA,NL>{
+	pub fn iter_darts_in_cell(&self, dart: DartIndex, i: usize)->IteratorDartsInCell<'_, N,NA,NL>{
 		return IteratorDartsInCell::new(&self, dart, i);
 	}
 	
 	/// Returns an iterator which iterates over exactly one dart per i-cell in the generalized map.
-	pub fn iter_dart_per_cell(&self, i: usize)->IteratorDartPerCell<N,NA,NL>{
+	pub fn iter_dart_per_cell(&self, i: usize)->IteratorDartPerCell<'_, N,NA,NL>{
 		return IteratorDartPerCell::new(&self, i);
 	}
 	
@@ -119,25 +119,25 @@ impl<const N: usize, const NA: usize, const NL: usize> NGMap<N,NA,NL> {
 	/// (all vertices incident to a face, all faces incident to a volume, all faces incident to a vertex, etc.)
 	/// 
 	/// Please not that i and j must be different, otherwise refer to [`Self::iter_adjacent`]
-	pub fn iter_incident(&self, dart: DartIndex, i: usize, j: usize)->IteratorDartPerCellIncident<N,NA,NL>{
+	pub fn iter_incident(&self, dart: DartIndex, i: usize, j: usize)->IteratorDartPerCellIncident<'_, N,NA,NL>{
 		return IteratorDartPerCellIncident::new(&self, dart, i, j);
 	}
 	
 	/// Returns an adjacency iterator which iterates over exactly one dart per an i-cell neighbouring the i-cell to which `dart` belongs.
-	pub fn iter_adjacent(&self, dart: DartIndex, i: usize)->IteratorDartPerCellAdjacent<N,NA,NL>{
+	pub fn iter_adjacent(&self, dart: DartIndex, i: usize)->IteratorDartPerCellAdjacent<'_, N,NA,NL>{
 		return IteratorDartPerCellAdjacent::<N,NA,NL>::new(&self, dart, i);
 	}
 	
 	/// Returns an iterator over all darts in the map
-	pub fn iter_all(&self)->IteratorAllDarts<N,NA,NL>{
+	pub fn iter_all(&self)->IteratorAllDarts<'_, N,NA,NL>{
 		return IteratorAllDarts::new(&self);
 	}
 	
-	pub fn iter_dart_per_component(&self)->IteratorDartPerComponent<N,NA,NL>{
+	pub fn iter_dart_per_component(&self)->IteratorDartPerComponent<'_, N,NA,NL>{
 		return IteratorDartPerComponent::new(&self);
 	}
 	
-	pub fn iter_darts_in_component(&self, dart: DartIndex)->IteratorDartsInComponent<N,NA,NL>{
+	pub fn iter_darts_in_component(&self, dart: DartIndex)->IteratorDartsInComponent<'_, N,NA,NL>{
 		return IteratorDartsInComponent::new(&self, dart);
 	}
 	

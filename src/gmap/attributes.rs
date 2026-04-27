@@ -58,11 +58,11 @@ impl<const N: usize, const NA: usize, const NL: usize> NGMap<N,NA,NL> {
 	}
 	
 	/// Returns a reference to the attribute container, wrapped in an [`Option`]
-	pub fn get_attribute_container(&self, idim: usize)->Option<Ref<AttributeContainer>>{
+	pub fn get_attribute_container(&self, idim: usize)->Option<Ref<'_, AttributeContainer>>{
 		return Some(self.attribute_containers[*self.attribute_container_indices.get(&idim)?].as_ref()?.borrow());
 	}
 	/// Returns a mutable reference to the attribute container, wrapped in an [`Option`]
-	pub fn get_attribute_container_mut(&self, idim: usize)->Option<RefMut<AttributeContainer>>{
+	pub fn get_attribute_container_mut(&self, idim: usize)->Option<RefMut<'_, AttributeContainer>>{
 		return Some(self.attribute_containers[*self.attribute_container_indices.get(&idim)?].as_ref()?.borrow_mut());
 	}
 	

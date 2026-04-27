@@ -54,8 +54,8 @@ impl<const N: usize, const NA: usize, const NL: usize> NGMap<N,NA,NL> {
 		if !self.is_sewable(dart1, dart2, alpha){return false;}
 		let same_cell_1 : Vec<bool> = (0..N).into_iter().map(|idim| self.darts_in_same_cell(dart1, dart2, idim)).collect();
 		let seq = get_seq_sewing(alpha, self.ndims);
-		let mut it1 = self.iter_orbit(*dart1, &seq);
-		let mut it2 = self.iter_orbit(*dart2, &seq);
+		let it1 = self.iter_orbit(*dart1, &seq);
+		let it2 = self.iter_orbit(*dart2, &seq);
 		let pairs : Vec<(DartIndex, DartIndex)> = it1.zip(it2).collect();
 		for (dart1, dart2) in pairs {
 			self.darts[*dart1].set_alpha(&dart2, alpha);
@@ -73,8 +73,8 @@ impl<const N: usize, const NA: usize, const NL: usize> NGMap<N,NA,NL> {
 	/// Unglues an i-cell into its separate components.
 	pub fn unsew(&mut self, dart1: &DartIndex, dart2: &DartIndex, alpha: usize){
 		let seq = get_seq_sewing(alpha, N);
-		let mut it1 = self.iter_orbit(*dart1, &seq);
-		let mut it2 = self.iter_orbit(*dart2, &seq);
+		let it1 = self.iter_orbit(*dart1, &seq);
+		let it2 = self.iter_orbit(*dart2, &seq);
 		let pairs : Vec<(DartIndex, DartIndex)> = it1.zip(it2).collect();
 		for (dart1, dart2) in pairs {
 			self.darts[*dart1].set_alpha(&dart1, alpha);

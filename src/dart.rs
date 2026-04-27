@@ -90,7 +90,6 @@ impl<const N: usize, const NA: usize, const NL: usize> Dart<N,NA,NL>{
 			attributes: attributes.into(),
 			links: links.into(),
 		};
-		todo!();
 	}
 	
 }

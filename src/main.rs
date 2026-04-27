@@ -1,15 +1,15 @@
 //use crate::*;
 
 use std::collections::{HashMap};
-use std::fs::{File,OpenOptions};
+use std::fs::{OpenOptions};
 use std::io::{Write};
 
-use std::any::{Any};
-use downcast_rs::{Downcast, impl_downcast};
+//use std::any::{Any};
+//use downcast_rs::{Downcast, impl_downcast};
 
 use generalized_map::{NGMap};
 use generalized_map::index::{DartIndex};
-use generalized_map::inspect::{DartInspector};
+//use generalized_map::inspect::{DartInspector};
 use generalized_map::output::{list_nodes_and_edges, write_nodes_and_edges};
 use generalized_map::index_allocator::{IndexAllocator};
 

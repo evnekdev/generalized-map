@@ -48,19 +48,7 @@ impl<const N: usize, const NA: usize, const NL: usize> NGMap<N,NA,NL> {
 	pub fn number_alpha_nonfree(&self)->usize{
 		return self.ndims;
 	}
-	/*
-	pub fn number_alpha_nonfree(&self)->usize{
-		let mut alpha_nonfree : [bool;N] = [false;N];
-		for dart in self.iter_all(){
-			for k in 0..N {
-				if self.darts[*dart].get_alpha(k) != dart{
-					alpha_nonfree[k] = true;
-				}
-			}
-		}
-		return alpha_nonfree.into_iter().filter(|val| *val).count();
-	}
-	*/
+	
 	/// Returns the total number of alpha slots involved at least once in the current connected component
 	pub fn number_alpha_nonfree_component(&self, dart: &DartIndex)->usize{
 		let mut alpha_nonfree : [bool;N] = [false;N];
@@ -84,7 +72,6 @@ impl<const N: usize, const NA: usize, const NL: usize> NGMap<N,NA,NL> {
 		}
 		// TODO figure out how to work out NL links
 		return (typeset.len(), cmp::max(NL, NL1));
-		todo!();
 	}
 	
 	/// Counts the connected components in the map

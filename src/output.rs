@@ -24,7 +24,7 @@ pub fn list_nodes_and_edges<const N: usize, const NA: usize, const NL: usize>(ma
 		nodes.insert(*node);
 	}
 	let mut edges : BTreeMap<usize,[i32;2]> = BTreeMap::new();
-	let mut count = -1;
+	//let count = -1;
 	for (edge, dart) in map.iter_dart_per_cell(1).enumerate(){
 		let mut ns : BTreeSet<i32> = BTreeSet::new();
 		for d in map.iter_darts_in_cell(dart, 1){
