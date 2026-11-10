@@ -76,6 +76,8 @@ impl<const N: usize, const NA: usize, const NL: usize> NGMap<N,NA,NL> {
 	/// Retrieves dart index connected to `dart` via alpha(i).
 	///
 	/// There is a convention saying that if a dart is alpha(i)-free, its alpha(i)-"connected" to itself, so there is always a valid output to this method.
+	/// This convention applies to active indices `alpha < ndims`. Inactive
+	/// capacity slots (`ndims..N`) contain null index 0, not a free connection.
 	pub fn get_alpha(&self, dart: &DartIndex, alpha: usize)->DartIndex{
 		return self.darts[**dart].get_alpha(alpha);
 	}

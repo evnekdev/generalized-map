@@ -130,8 +130,10 @@ impl<'a, const N: usize, const NA: usize, const NL: usize> Iterator for Iterator
 
 /**************************************************************************************************************************/
 
-/// Iterates over *J*-cells incident to an *I*-cell by yielding one dart per *J*-cell.
-/// For example, to iterate over all vertices incident to a volume, use *I* = 3 and *J* = 0; to iterate over all volumes which share a vertex, use *I* = 0 and *J* = 3.
+/// Iterates over *I*-cells incident to the source *J*-cell, yielding one dart
+/// per distinct *I*-cell. For vertices of a face use *I* = 0 and *J* = 2;
+/// for faces incident to a vertex use *I* = 2 and *J* = 0.
+/// Repeated incidences are deduplicated; recover occurrences from alpha flags.
 /// Indices *I* and *J* must be different.
 pub struct IteratorDartPerCellIncident<'a, const N: usize, const NA: usize, const NL: usize>{
 	mark : Option<MarkIndex>,
@@ -177,7 +179,9 @@ impl<'a, const N: usize, const NA: usize, const NL: usize> Iterator for Iterator
 
 /**************************************************************************************************************************/
 
-/// Iterates over all *I*-cells adjacent to the initial *I*-cell by yielding one dart per cell.
+/// Iterates over *I*-cells reached by crossing non-free alpha(*I*) links
+/// from the initial cell, yielding one dart per distinct cell. A non-free
+/// self-incidence can yield the initial cell; free connections are skipped.
 pub struct IteratorDartPerCellAdjacent<'a, const N: usize, const NA: usize, const NL: usize>{
 	mark : Option<MarkIndex>,
 	map: &'a NGMap<N,NA,NL>,
@@ -192,6 +196,7 @@ impl<'a, const N: usize, const NA: usize, const NL: usize> IteratorDartPerCellAd
 		let mut vec: Vec<DartIndex> = Vec::new();
 		for d in map.iter_orbit(dart, &iseq){
 			let d_i = map.get_alpha(&d, i);
+			if d_i == d {continue;}
 			if !map.is_marked(&d_i, &mark){
 				for dd in map.iter_orbit(d_i,&iseq){
 					map.mark(&dd, &mark);

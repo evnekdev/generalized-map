@@ -44,7 +44,8 @@ impl<const N: usize, const NA: usize, const NL: usize> NGMap<N,NA,NL> {
 		);
 	}
 	
-	/// Returns the total number of alpha slots involved at least once throughout the map
+	/// Returns the runtime number of active alpha slots (`ndims`), including
+	/// slots whose darts are all free. This is not a count of non-free links.
 	pub fn number_alpha_nonfree(&self)->usize{
 		return self.ndims;
 	}

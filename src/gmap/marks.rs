@@ -15,7 +15,9 @@ impl<const N: usize, const NA: usize, const NL: usize> NGMap<N,NA,NL> {
 	/// Reserves a storage for boolean marks for darts.
 	pub fn reserve_mark(&self)->MarkIndex{
 		let vec: Vec<bool> = vec![false;self.darts.len()];
-		let mark = MarkIndex::from(self.marks.borrow().len());
+		// A released mark can leave a hole below a still-live mark's key.
+		let index = (0..).find(|index| !self.marks.borrow().contains_key(index)).unwrap();
+		let mark = MarkIndex::from(index);
 		self.marks.borrow_mut().insert(*mark, RefCell::new(vec));
 		return mark;
 	}

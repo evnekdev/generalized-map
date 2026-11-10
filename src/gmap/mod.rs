@@ -43,17 +43,19 @@ mod shapes_embedded;
 /// 
 /// Type parameters:
 /// 
-/// *N* is the maximum number of dimensions
+/// *N* is the capacity of alpha slots per dart (indices `0..N`), not the
+/// largest cell dimension. The runtime `ndims` counts active slots; for
+/// vertices, edges and faces use `N >= 3` and `ndims = 3`.
 /// 
 /// *NA* is the maximum number of available attributes (act as "slots", any combinations of NA i of i-cells which embeddings are possible)
 /// 
 /// *NL* is the maximum number of additional weak links between darts which facilitate searching on the map and are not part of the stardard alpha-link interface.
 #[derive(Serialize)]
 pub struct NGMap<const N: usize, const NA: usize = 0, const NL: usize = 0>{
-	// N is the maximum dimension,
+	// N is the alpha-slot capacity,
 	// NA is the maximum number of attributes
 	// NL is the maximum number of "extra" links to other darts (hierarchy structures, etc.)
-	ndims: usize, // less or equal to N
+	ndims: usize, // active alpha-slot count, less or equal to N
 	darts: Vec<Dart<N,NA,NL>>,
 	//free_dart_indices: VecDeque<usize>,
 	//#[serde(skip_serializing)]
@@ -75,7 +77,9 @@ impl<const N: usize, const NA: usize, const NL: usize> NGMap<N,NA,NL> {
 		return std::array::from_fn(|_| None);
 	}
 	
-	/// Initializes an empty generalized map
+	/// Initializes an empty generalized map with `ndims` active alpha slots.
+	/// Callers must supply `ndims <= N`. Active alpha and cell indices are
+	/// `0..ndims`; higher capacity slots contain the null dart index 0.
 	pub fn new(ndims: usize)->Self{
 		return NGMap{
 					ndims: ndims,
@@ -123,7 +127,8 @@ impl<const N: usize, const NA: usize, const NL: usize> NGMap<N,NA,NL> {
 		return IteratorDartPerCellIncident::new(&self, dart, i, j);
 	}
 	
-	/// Returns an adjacency iterator which iterates over exactly one dart per an i-cell neighbouring the i-cell to which `dart` belongs.
+	/// Returns one dart per distinct i-cell reached through non-free alpha(i)
+	/// links. Non-free self-incidence can return the source cell; free links cannot.
 	pub fn iter_adjacent(&self, dart: DartIndex, i: usize)->IteratorDartPerCellAdjacent<'_, N,NA,NL>{
 		return IteratorDartPerCellAdjacent::<N,NA,NL>::new(&self, dart, i);
 	}
