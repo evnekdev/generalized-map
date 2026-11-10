@@ -158,6 +158,9 @@ fn main() {
 
 ## 🧩 Core Concepts
 
+For the verified alpha-slot, cell-orbit, incidence and external-adapter contract,
+see [Topology contract and verification](docs/topology-contract.md).
+
 ### Dart
 
 - Fundamental unit of a G-map

@@ -13,9 +13,10 @@ use super::{NGMap};
 /// Darts must be different and alpha(*I*)-free; also, according to the definition of the sewing operation, the *orbits* [alpha(*0*), ..., alpha(*I*-2),alpha(*I*+2),...,alpha(*N*)] for both darts must be isomorphic to each other.
 /// Unlike sewing, unsewing is always possible for a pair of distinct darts.
 impl<const N: usize, const NA: usize, const NL: usize> NGMap<N,NA,NL> {
-	/// Returns `true` if `dart` and `dart1` span isomorphic orbits, called by [`Self::sew`]
+	/// Returns `true` if both darts and their corresponding sewing orbits are
+	/// alpha-free and the orbits are isomorphic. Called by [`Self::sew`].
 	pub fn is_sewable(&self, dart1: &DartIndex, dart2: &DartIndex, alpha: usize)->bool{
-		if dart1 == dart2 || !self.is_free(dart1, alpha){
+		if dart1 == dart2 || !self.is_free(dart1, alpha) || !self.is_free(dart2, alpha){
 			return false;
 		}
 		let seq = get_seq_sewing(alpha, self.ndims);
@@ -25,6 +26,7 @@ impl<const N: usize, const NA: usize, const NL: usize> NGMap<N,NA,NL> {
 		loop {
 			match (it1.next(), it2.next()){
 				(Some(dart1),Some(dart2)) => {
+					if !self.is_free(&dart1, alpha) || !self.is_free(&dart2, alpha){return false;}
 					assoc.insert(dart1, dart2);
 					for j in &seq{
 						let dart1_j = self.get_alpha(&dart1, *j);
@@ -46,7 +48,7 @@ impl<const N: usize, const NA: usize, const NL: usize> NGMap<N,NA,NL> {
 		return true;
 	}
 	
-	/// Glues two i-cells together, effectively making them one i-cell.
+	/// Joins corresponding darts of two alpha(i)-free sewing orbits.
 	/// This operation is only possible if `dart1` and `dart2` are different,
 	/// 
 	/// both are alpha(i)-free and the orbits spanned by them are isomorphic to each other (it is not possible to sew a triangle and a square faces together).
